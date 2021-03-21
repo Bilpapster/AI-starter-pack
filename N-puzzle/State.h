@@ -1,8 +1,8 @@
 #ifndef AI_STARTER_PACK_IN_CPP_STATE_H
 #define AI_STARTER_PACK_IN_CPP_STATE_H
 
-#define WIDTH  100
-#define HEIGHT  100
+#define WIDTH  3
+#define HEIGHT  3
 
 #include <string>
 #include <sstream>
@@ -28,7 +28,7 @@ public:
 
     void setY(int y);
 
-    State operator=(State other);
+    State &operator=(State other);
 
     bool operator==(const State &other) const;
 
@@ -40,13 +40,13 @@ public:
 
     bool turnOff(State &nextState);
 
-    bool goUp(State &nextState);
+    bool moveBlankTileUp(State &nextState);
 
-    bool goDown(State &nextState);
+    bool moveBlankTileDown(State &nextState);
 
-    bool goLeft(State &nextState);
+    bool moveBlankTileLeft(State &nextState);
 
-    bool goRight(State &nextState);
+    bool moveBlankTileRight(State &nextState);
 
     vector<State *> expand();
 
@@ -74,15 +74,23 @@ public:
 
     friend ostream &operator<<(ostream &, const State &);
 
+    string getUniqueRepresentation() const;
+
 protected:
 
 private:
     int xCoordinate, yCoordinate;
     bool free[WIDTH][HEIGHT];
+    long long int table[HEIGHT][WIDTH] = {{3, 6, 0},
+                                          {1, 4, 2},
+                                          {7, 5, 8}};
     double heuristicValue;
     string actionName;
     State *previous;
     bool lights;
+
+    int blankTileRow = 0;
+    int blankTileColumn = 2;
 };
 
 class StateComparator {
