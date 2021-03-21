@@ -188,7 +188,7 @@ vector<State *> State::expand() {
     return children;
 }
 
-int State::heuristic(State *goalState) {
+int State::heuristic(State *goalState) const {
     int distance = abs(goalState->xCoordinate - xCoordinate) + abs(goalState->yCoordinate - yCoordinate);
     if (lights != goalState->lights)
         distance++;
@@ -199,7 +199,7 @@ void State::setHeuristicValue(double value) {
     heuristicValue = value;
 }
 
-double State::getHeuristicValue() {
+double State::getHeuristicValue() const {
     return heuristicValue;
 }
 

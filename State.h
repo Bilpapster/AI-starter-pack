@@ -54,9 +54,9 @@ public:
 
     void setHeuristicValue(double);
 
-    double getHeuristicValue();
+    double getHeuristicValue() const;
 
-    int heuristic(State *);
+    int heuristic(State *) const;
 
     void setActionName(string s) { actionName = s; }
 
@@ -66,7 +66,7 @@ public:
 
     State *getPrevious() const { return previous; }
 
-    unsigned long getKey() {
+    unsigned long getKey() const {
         unsigned long k = xCoordinate * 1000000 + yCoordinate * 1000;
         if (lights) k += 1;
         return k;
