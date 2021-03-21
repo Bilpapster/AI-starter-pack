@@ -7,13 +7,13 @@ using namespace std;
 
 class SearchExpert {
 public:
-    static State *DFS2(State *initial, State *goal, long long &examined, long long &mem);
+    static State *depthFirstSearch2(State *initial, State *goal, long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
 
-    static State *BFS2(State *initial, State *goal, long long &examined, long long &mem);
+    static State *breadthFirstSearch(State *initial, State *goal, long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
 
-    static State *BFS(State *initial, State *goal, long long &examined, long long &mem);
+    static State *breadthFirstSearch2(State *initial, State *goal, long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
 
-    static State *BestFS2(State *initial, State *goal, long long &examined, long long &mem);
+    static State *bestFirstSearch(State *initial, State *goal, long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
 };
 
 

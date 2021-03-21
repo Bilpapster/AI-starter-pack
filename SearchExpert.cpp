@@ -1,118 +1,122 @@
-#include <iostream>
-#include <unordered_set>
 #include <unordered_map>
-#include <limits>
-#include <ctime>
-#include "State.h"
-#include <queue>
-#include <stack>
 #include <algorithm>
+#include <stack>
+#include <queue>
+
 #include "SearchExpert.h"
 
-State *SearchExpert::DFS2(State *initial, State *goal, long long int &examined, long long int &mem) {
-    stack<State *> agenda;
-    unordered_map<unsigned long, State *> closed;
+State *SearchExpert::depthFirstSearch2(State *initial, State *goal,
+                                       long long int &numberOfExaminedStates,
+                                       long long int &volumeOfAllocatedMemory) {
+    stack<State *> searchFrontier;
+    unordered_map<unsigned long, State *> closedStates;
 
-    agenda.push(initial);
-    examined = 0;
-    mem = 1;
-    while (agenda.size() > 0) {
-        if (agenda.size() + closed.size() > mem)
-            mem = agenda.size() + closed.size();
-        State *s = agenda.top();
-        agenda.pop();
-        if (closed.count(s->getKey()) == 0) {
-            examined++;
-            if (*s == *goal)
-                return s;
-            pair<unsigned long, State *> k(s->getKey(), s);
-            closed.insert(k);
-            vector<State *> children = s->expand();
+    searchFrontier.push(initial);
+    numberOfExaminedStates = 0;
+    volumeOfAllocatedMemory = 1;
+    while (!searchFrontier.empty()) {
+        if (searchFrontier.size() + closedStates.size() > volumeOfAllocatedMemory)
+            volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
+        State *currentlyExaminingState = searchFrontier.top();
+        searchFrontier.pop();
+        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+            numberOfExaminedStates++;
+            if (*currentlyExaminingState == *goal)
+                return currentlyExaminingState;
+            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            closedStates.insert(k);
+            vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++)
-                if (closed.count(children[i]->getKey()) == 0)
-                    agenda.push(children[i]);
+                if (closedStates.count(children[i]->getKey()) == 0)
+                    searchFrontier.push(children[i]);
         }
     }
     return nullptr;
 }
 
-State *SearchExpert::BFS2(State *initial, State *goal, long long int &examined, long long int &mem) {
-    queue<State *> agenda;
-    unordered_map<unsigned long, State *> closed;
+State *SearchExpert::breadthFirstSearch(State *initial, State *goal,
+                                        long long int &numberOfExaminedStates,
+                                        long long int &volumeOfAllocatedMemory) {
+    queue<State *> searchFrontier;
+    unordered_map<unsigned long, State *> closedStates;
 
-    agenda.push(initial);
-    examined = 0;
-    mem = 1;
-    while (agenda.size() > 0) {
-        if (agenda.size() + closed.size() > mem)
-            mem = agenda.size() + closed.size();
-        State *s = agenda.front();
-        agenda.pop();
-        if (closed.count(s->getKey()) == 0) {
-            examined++;
-            if (*s == *goal)
-                return s;
-            pair<unsigned long, State *> k(s->getKey(), s);
-            closed.insert(k);
-            vector<State *> children = s->expand();
+    searchFrontier.push(initial);
+    numberOfExaminedStates = 0;
+    volumeOfAllocatedMemory = 1;
+    while (!searchFrontier.empty()) {
+        if (searchFrontier.size() + closedStates.size() > volumeOfAllocatedMemory)
+            volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
+        State *currentlyExaminingState = searchFrontier.front();
+        searchFrontier.pop();
+        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+            numberOfExaminedStates++;
+            if (*currentlyExaminingState == *goal)
+                return currentlyExaminingState;
+            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            closedStates.insert(k);
+            vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++)
-                if (closed.count(children[i]->getKey()) == 0)
-                    agenda.push(children[i]);
+                if (closedStates.count(children[i]->getKey()) == 0)
+                    searchFrontier.push(children[i]);
         }
     }
     return nullptr;
 }
 
-State *SearchExpert::BFS(State *initial, State *goal, long long int &examined, long long int &mem) {
-    queue<State *> agenda;
-    vector<State> closed;
+State *SearchExpert::breadthFirstSearch2(State *initial, State *goal,
+                                         long long int &numberOfExaminedStates,
+                                         long long int &volumeOfAllocatedMemory) {
+    queue<State *> searchFrontier;
+    vector<State> closedStates;
 
-    agenda.push(initial);
-    examined = 0;
-    mem = 1;
-    while (agenda.size() > 0) {
-        if (agenda.size() + closed.size() > mem)
-            mem = agenda.size() + closed.size();
-        State *s = agenda.front();
-        agenda.pop();
-        if (find(closed.begin(), closed.end(), *s) == closed.end()) {
-            examined++;
-            if (*s == *goal)
-                return s;
-            closed.push_back(*s);
-            vector<State *> children = s->expand();
+    searchFrontier.push(initial);
+    numberOfExaminedStates = 0;
+    volumeOfAllocatedMemory = 1;
+    while (!searchFrontier.empty()) {
+        if (searchFrontier.size() + closedStates.size() > volumeOfAllocatedMemory)
+            volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
+        State *currentlyExaminingState = searchFrontier.front();
+        searchFrontier.pop();
+        if (find(closedStates.begin(), closedStates.end(), *currentlyExaminingState) == closedStates.end()) {
+            numberOfExaminedStates++;
+            if (*currentlyExaminingState == *goal)
+                return currentlyExaminingState;
+            closedStates.push_back(*currentlyExaminingState);
+            vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++) {
-                if (find(closed.begin(), closed.end(), *children[i]) == closed.end())
-                    agenda.push(children[i]);
+                if (find(closedStates.begin(), closedStates.end(), *children[i]) == closedStates.end())
+                    searchFrontier.push(children[i]);
             }
         }
     }
     return nullptr;
 }
 
-State *SearchExpert::BestFS2(State *initial, State *goal, long long int &examined, long long int &mem) {
-    priority_queue<State *, vector<State *>, StateComparator> agenda;
-    unordered_map<unsigned long, State *> closed;
-    agenda.push(initial);
-    examined = 0;
-    mem = 1;
-    while (agenda.size() > 0) {
-        if (agenda.size() + closed.size() > mem)
-            mem = agenda.size() + closed.size();
-        State *s = agenda.top();
-        agenda.pop();
+State *SearchExpert::bestFirstSearch(State *initial, State *goal,
+                                     long long int &numberOfExaminedStates,
+                                     long long int &volumeOfAllocatedMemory) {
+    priority_queue<State *, vector<State *>, StateComparator> searchFrontier;
+    unordered_map<unsigned long, State *> closedStates;
+    searchFrontier.push(initial);
+    numberOfExaminedStates = 0;
+    volumeOfAllocatedMemory = 1;
+    while (!searchFrontier.empty()) {
+        if (searchFrontier.size() + closedStates.size() > volumeOfAllocatedMemory)
+            volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
+        State *currentlyExaminingState = searchFrontier.top();
+        searchFrontier.pop();
 
-        if (closed.count(s->getKey()) == 0) {
-            examined++;
-            if (*s == *goal)
-                return s;
-            pair<unsigned long, State *> k(s->getKey(), s);
-            closed.insert(k);
-            vector<State *> children = s->expand();
+        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+            numberOfExaminedStates++;
+            if (*currentlyExaminingState == *goal)
+                return currentlyExaminingState;
+            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            closedStates.insert(k);
+            vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++) {
-                if (closed.count(children[i]->getKey()) == 0) {
+                if (closedStates.count(children[i]->getKey()) == 0) {
                     children.at(i)->setHeuristicValue(children.at(i)->heuristic(goal));
-                    agenda.push(children.at(i));
+                    searchFrontier.push(children.at(i));
                 }
             }
         }
