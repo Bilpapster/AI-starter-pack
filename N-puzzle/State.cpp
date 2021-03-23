@@ -6,48 +6,6 @@
 State::State() {
     setActionName("");
     setPrevious(nullptr);
-
-//    for (int i = 0; i < WIDTH; i++)
-//        for (int j = 0; j < HEIGHT; j++)
-//            free[i][j] = true;
-}
-
-State::State(int x, int y, bool lights) : State() {
-//    xCoordinate = x;
-//    yCoordinate = y;
-//    this->lights = lights;
-//    lights = true;
-
-//    for (int i = 0; i < WIDTH; i++)
-//        for (int j = 0; j < HEIGHT; j++)
-//            free[i][j] = true;
-//    setActionName("");
-//    setPrevious(nullptr);
-
-}
-
-void State::setFree(int x, int y, bool flag) {
-    free[x][y] = flag;
-}
-
-int State::getY() const {
-    return yCoordinate;
-}
-
-int State::getX() const {
-    return xCoordinate;
-}
-
-bool State::isFree(int x, int y) {
-    return free[x][y];
-}
-
-void State::setX(int x) {
-    xCoordinate = x;
-}
-
-void State::setY(int y) {
-    yCoordinate = y;
 }
 
 State &State::operator=(State other) {
@@ -61,60 +19,33 @@ State &State::operator=(State other) {
     this->previous = other.previous;
     this->actionName = other.actionName;
     return *this;
-
-//    this->lights = other.lights;
-//    this->xCoordinate = other.xCoordinate;
-//    this->yCoordinate = other.yCoordinate;
-//    this->previous = other.previous;
-//    this->actionName = other.actionName;
-//    return *this;
 }
 
 bool State::operator==(const State &other) const {
-//    return this->getUniqueRepresentation() == other.getUniqueRepresentation();
+    if (this->blankTileRow != other.blankTileRow) { return false; }
 
-    if (this->blankTileRow != other.blankTileRow) {
-        return false;
-    }
-
-    if (this->blankTileColumn != other.blankTileColumn) {
-        return false;
-    }
+    if (this->blankTileColumn != other.blankTileColumn) { return false; }
 
     for (int row = 0; row < HEIGHT; row++) {
         for (int column = 0; column < WIDTH; column++) {
-            if (this->table[row][column] != other.table[row][column]) {
-                return false;
-            }
+            if (this->table[row][column] != other.table[row][column]) { return false; }
         }
     }
     return true;
 }
 
-bool operator<(const State &left, const State &right) {
-    return (left.getHeuristicValue() < right.getHeuristicValue());
-//    return (left.toString() < right.toString());
-}
-
 string State::toString() const {
-
-    stringstream output;
+    stringstream stateDescription;
     for (int row = 0; row < HEIGHT; row++) {
         for (int column = 0; column < WIDTH; column++) {
-                output << this->table[row][column] << " ";
+            stateDescription << this->table[row][column] << " ";
         }
-        output << endl;
+        stateDescription << endl;
     }
-    output << "Blank tile: (" << this->blankTileRow << ", " << this->blankTileColumn << ")" << endl;
-    return output.str();
-
-//    stringstream stateDescription;
-//    stateDescription << xCoordinate << "-" << yCoordinate << "-";
-//    if (lights)
-//        stateDescription << "true";
-//    else
-//        stateDescription << "false";
-//    return stateDescription.str();
+    stateDescription << "Blank tile: ("
+                     << this->blankTileRow << ", " << this->blankTileColumn
+                     << ")" << endl;
+    return stateDescription.str();
 }
 
 int State::getDepth() {
@@ -125,29 +56,6 @@ int State::getDepth() {
         depth++;
     }
     return depth;
-    //return path.size();
-}
-
-bool State::turnOn(State &nextState) {
-    if (!lights) {
-        nextState = *this;
-        nextState.lights = true;
-        nextState.setActionName("SwitchOn");
-        nextState.setPrevious(this);
-        return true;
-    }
-    return false;
-}
-
-bool State::turnOff(State &nextState) {
-    if (lights) {
-        nextState = *this;
-        nextState.lights = false;
-        nextState.setActionName("SwitchOff");
-        nextState.setPrevious(this);
-        return true;
-    }
-    return false;
 }
 
 bool State::moveBlankTileUp(State &nextState) {
@@ -161,15 +69,6 @@ bool State::moveBlankTileUp(State &nextState) {
         return true;
     }
     return false;
-
-//    if (getY() > 0 && isFree(getX(), getY() - 1)) {
-//        nextState = *this;
-//        nextState.setY(nextState.getY() - 1);
-//        nextState.setActionName("Up");
-//        nextState.setPrevious(this);
-//        return true;
-//    }
-//    return false;
 }
 
 bool State::moveBlankTileDown(State &nextState) {
@@ -184,15 +83,6 @@ bool State::moveBlankTileDown(State &nextState) {
         return true;
     }
     return false;
-
-//    if (getY() < HEIGHT - 1 && isFree(getX(), getY() + 1)) {
-//        nextState = *this;
-//        nextState.setY(nextState.getY() + 1);
-//        nextState.setActionName("Down");
-//        nextState.setPrevious(this);
-//        return true;
-//    }
-//    return false;
 }
 
 bool State::moveBlankTileLeft(State &nextState) {
@@ -206,15 +96,6 @@ bool State::moveBlankTileLeft(State &nextState) {
         return true;
     }
     return false;
-
-//    if (getX() > 0 && isFree(getX() - 1, getY())) {
-//        nextState = *this;
-//        nextState.setX(nextState.getX() - 1);
-//        nextState.setActionName("Left");
-//        nextState.setPrevious(this);
-//        return true;
-//    }
-//    return false;
 }
 
 bool State::moveBlankTileRight(State &nextState) {
@@ -229,17 +110,6 @@ bool State::moveBlankTileRight(State &nextState) {
         return true;
     }
     return false;
-
-//    if (getX() < WIDTH - 1 && isFree(getX() + 1, getY())) {
-//        nextState = *this;
-//        nextState.setX(nextState.getX() + 1);
-//        nextState.setActionName("Right");
-//        nextState.setPrevious(this);
-//
-// //        nextState.path.push_back("Right");
-//        return true;
-//    }
-//    return false;
 }
 
 vector<State *> State::expand() {
@@ -269,18 +139,6 @@ vector<State *> State::expand() {
     } else {
         delete child;
     }
-//    cout << endl;
-
-//    child = new State(*this);
-//    if (turnOn(*child))
-//        children.push_back(child);
-//    else
-//        delete child;
-//    child = new State(*this);
-//    if (turnOff(*child))
-//        children.push_back(child);
-//    else
-//        delete child;
     return children;
 }
 
@@ -306,13 +164,7 @@ int State::heuristic(State *goalState) const {
         }
     }
     return distance;
-
-//    int distance = abs(goalState->xCoordinate - xCoordinate) + abs(goalState->yCoordinate - yCoordinate);
-//    if (lights != goalState->lights) {
-//        distance++;
-//    }
-//    return distance;
-};
+}
 
 void State::setHeuristicValue(double value) {
     heuristicValue = value;
