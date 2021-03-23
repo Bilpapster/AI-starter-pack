@@ -58,11 +58,11 @@ public:
 
     int heuristic(State *) const;
 
-    void setActionName(string s) { actionName = s; }
+    void setActionName(string actionName) { this->actionName = actionName; }
 
     string getActionName() const { return actionName; }
 
-    void setPrevious(State *p) { previous = p; }
+    void setPrevious(State *previous) { this->previous = previous; }
 
     State *getPrevious() const { return previous; }
 
@@ -76,6 +76,8 @@ public:
 
     string getUniqueRepresentation() const;
 
+    void setFinal();
+
 protected:
 
 private:
@@ -84,6 +86,7 @@ private:
     long long int table[HEIGHT][WIDTH] = {{3, 6, 0},
                                           {1, 4, 2},
                                           {7, 5, 8}};
+
     double heuristicValue;
     string actionName;
     State *previous;

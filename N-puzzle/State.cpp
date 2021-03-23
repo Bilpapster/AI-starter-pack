@@ -1,22 +1,22 @@
+#include <iostream>
 #include "State.h"
 
 #define BLANK 0
 
 State::State() {
-
-
-    for (int i = 0; i < WIDTH; i++)
-        for (int j = 0; j < HEIGHT; j++)
-            free[i][j] = true;
     setActionName("");
     setPrevious(nullptr);
+
+//    for (int i = 0; i < WIDTH; i++)
+//        for (int j = 0; j < HEIGHT; j++)
+//            free[i][j] = true;
 }
 
 State::State(int x, int y, bool lights) : State() {
-    xCoordinate = x;
-    yCoordinate = y;
-    this->lights = lights;
-    lights = true;
+//    xCoordinate = x;
+//    yCoordinate = y;
+//    this->lights = lights;
+//    lights = true;
 
 //    for (int i = 0; i < WIDTH; i++)
 //        for (int j = 0; j < HEIGHT; j++)
@@ -71,6 +71,8 @@ State &State::operator=(State other) {
 }
 
 bool State::operator==(const State &other) const {
+//    return this->getUniqueRepresentation() == other.getUniqueRepresentation();
+
     if (this->blankTileRow != other.blankTileRow) {
         return false;
     }
@@ -90,12 +92,21 @@ bool State::operator==(const State &other) const {
 }
 
 bool operator<(const State &left, const State &right) {
-    return (left.toString() < right.toString());
+    return (left.getHeuristicValue() < right.getHeuristicValue());
+//    return (left.toString() < right.toString());
 }
 
 string State::toString() const {
 
-    return this->getUniqueRepresentation();
+    stringstream output;
+    for (int row = 0; row < HEIGHT; row++) {
+        for (int column = 0; column < WIDTH; column++) {
+                output << this->table[row][column] << " ";
+        }
+        output << endl;
+    }
+    output << "Blank tile: (" << this->blankTileRow << ", " << this->blankTileColumn << ")" << endl;
+    return output.str();
 
 //    stringstream stateDescription;
 //    stateDescription << xCoordinate << "-" << yCoordinate << "-";
@@ -146,6 +157,7 @@ bool State::moveBlankTileUp(State &nextState) {
         nextState.table[nextState.blankTileRow - 1][nextState.blankTileColumn] = BLANK;
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileRow--;
+        nextState.setPrevious(this);
         return true;
     }
     return false;
@@ -168,6 +180,7 @@ bool State::moveBlankTileDown(State &nextState) {
         nextState.table[nextState.blankTileRow + 1][nextState.blankTileColumn] = BLANK;
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileRow++;
+        nextState.setPrevious(this);
         return true;
     }
     return false;
@@ -189,6 +202,7 @@ bool State::moveBlankTileLeft(State &nextState) {
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn - 1] = BLANK;
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileColumn--;
+        nextState.setPrevious(this);
         return true;
     }
     return false;
@@ -211,6 +225,7 @@ bool State::moveBlankTileRight(State &nextState) {
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn + 1] = BLANK;
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileColumn++;
+        nextState.setPrevious(this);
         return true;
     }
     return false;
@@ -231,25 +246,31 @@ vector<State *> State::expand() {
     vector<State *> children;
     State *child;
     child = new State(*this);
-    if (moveBlankTileUp(*child))
+    if (moveBlankTileUp(*child)) {
         children.push_back(child);
-    else
+    } else {
         delete child;
+    }
     child = new State(*this);
-    if (moveBlankTileDown(*child))
+    if (moveBlankTileDown(*child)) {
         children.push_back(child);
-    else
+    } else {
         delete child;
+    }
     child = new State(*this);
-    if (moveBlankTileLeft(*child))
+    if (moveBlankTileLeft(*child)) {
         children.push_back(child);
-    else
+    } else {
         delete child;
+    }
     child = new State(*this);
-    if (moveBlankTileRight(*child))
+    if (moveBlankTileRight(*child)) {
         children.push_back(child);
-    else
+    } else {
         delete child;
+    }
+//    cout << endl;
+
 //    child = new State(*this);
 //    if (turnOn(*child))
 //        children.push_back(child);
@@ -319,10 +340,22 @@ string State::getUniqueRepresentation() const {
     stringstream dashboardRepresentation;
     for (int row = 0; row < 3; row++) {
         for (int column = 0; column < 3; column++) {
-            dashboardRepresentation << this->table[row][column];
+            dashboardRepresentation << this->table[row][column] << "-";
         }
     }
     return dashboardRepresentation.str();
+}
+
+void State::setFinal() {
+    int number = 1;
+    for (int row = 0; row < HEIGHT; row++) {
+        for (int column = 0; column < WIDTH; column++) {
+            this->table[row][column] = number++;
+        }
+    }
+    this->blankTileRow = HEIGHT - 1;
+    this->blankTileColumn = WIDTH - 1;
+    this->table[blankTileRow][blankTileColumn] = BLANK;
 }
 
 

@@ -9,7 +9,8 @@ State *SearchExpert::depthFirstSearch2(State *initial, State *goal,
                                        long long int &numberOfExaminedStates,
                                        long long int &volumeOfAllocatedMemory) {
     stack<State *> searchFrontier;
-    unordered_map<unsigned long, State *> closedStates;
+    unordered_map<string, State *> closedStates;
+//    unordered_map<unsigned long, State *> closedStates;
 
     searchFrontier.push(initial);
     numberOfExaminedStates = 0;
@@ -19,15 +20,19 @@ State *SearchExpert::depthFirstSearch2(State *initial, State *goal,
             volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
         State *currentlyExaminingState = searchFrontier.top();
         searchFrontier.pop();
-        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+        if (closedStates.count(currentlyExaminingState->getUniqueRepresentation()) == 0) {
+//        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
             numberOfExaminedStates++;
             if (*currentlyExaminingState == *goal)
+//            if ((*currentlyExaminingState).getUniqueRepresentation() == (*goal).getUniqueRepresentation())
                 return currentlyExaminingState;
-            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            pair<string, State *> k(currentlyExaminingState->getUniqueRepresentation(), currentlyExaminingState);
+//            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
             closedStates.insert(k);
             vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++)
-                if (closedStates.count(children[i]->getKey()) == 0)
+                if (closedStates.count(children[i]->getUniqueRepresentation()) == 0)
+//                if (closedStates.count(children[i]->getKey()) == 0)
                     searchFrontier.push(children[i]);
         }
     }
@@ -38,7 +43,8 @@ State *SearchExpert::breadthFirstSearch(State *initial, State *goal,
                                         long long int &numberOfExaminedStates,
                                         long long int &volumeOfAllocatedMemory) {
     queue<State *> searchFrontier;
-    unordered_map<unsigned long, State *> closedStates;
+    unordered_map<string, State *> closedStates;
+//    unordered_map<unsigned long, State *> closedStates;
 
     searchFrontier.push(initial);
     numberOfExaminedStates = 0;
@@ -48,15 +54,19 @@ State *SearchExpert::breadthFirstSearch(State *initial, State *goal,
             volumeOfAllocatedMemory = searchFrontier.size() + closedStates.size();
         State *currentlyExaminingState = searchFrontier.front();
         searchFrontier.pop();
-        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+        if (closedStates.count(currentlyExaminingState->getUniqueRepresentation()) == 0) {
+//        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
             numberOfExaminedStates++;
-            if (*currentlyExaminingState == *goal)
+            if ((*currentlyExaminingState) == (*goal))
+//            if ((*currentlyExaminingState).getUniqueRepresentation() == (*goal).getUniqueRepresentation())
                 return currentlyExaminingState;
-            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            pair<string , State *> k(currentlyExaminingState->getUniqueRepresentation(), currentlyExaminingState);
+//            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
             closedStates.insert(k);
             vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++)
-                if (closedStates.count(children[i]->getKey()) == 0)
+//                if (closedStates.count(children[i]->getKey()) == 0)
+                if (closedStates.count(children[i]->getUniqueRepresentation()) == 0)
                     searchFrontier.push(children[i]);
         }
     }
@@ -96,7 +106,9 @@ State *SearchExpert::bestFirstSearch(State *initial, State *goal,
                                      long long int &numberOfExaminedStates,
                                      long long int &volumeOfAllocatedMemory) {
     priority_queue<State *, vector<State *>, StateComparator> searchFrontier;
-    unordered_map<unsigned long, State *> closedStates;
+//    unordered_map<unsigned long, State *> closedStates;
+    unordered_map<string, State *> closedStates;
+
     searchFrontier.push(initial);
     numberOfExaminedStates = 0;
     volumeOfAllocatedMemory = 1;
@@ -106,15 +118,18 @@ State *SearchExpert::bestFirstSearch(State *initial, State *goal,
         State *currentlyExaminingState = searchFrontier.top();
         searchFrontier.pop();
 
-        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
+        if (closedStates.count(currentlyExaminingState->getUniqueRepresentation()) == 0) {
+//        if (closedStates.count(currentlyExaminingState->getKey()) == 0) {
             numberOfExaminedStates++;
             if (*currentlyExaminingState == *goal)
                 return currentlyExaminingState;
-            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
+            pair<string, State *> k(currentlyExaminingState->getUniqueRepresentation(), currentlyExaminingState);
+//            pair<unsigned long, State *> k(currentlyExaminingState->getKey(), currentlyExaminingState);
             closedStates.insert(k);
             vector<State *> children = currentlyExaminingState->expand();
             for (unsigned int i = 0; i < children.size(); i++) {
-                if (closedStates.count(children[i]->getKey()) == 0) {
+//                if (closedStates.count(children[i]->getKey()) == 0) {
+                if (closedStates.count(children[i]->getUniqueRepresentation()) == 0) {
                     children.at(i)->setHeuristicValue(children.at(i)->heuristic(goal));
                     searchFrontier.push(children.at(i));
                 }
