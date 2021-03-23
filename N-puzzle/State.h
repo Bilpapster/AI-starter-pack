@@ -55,15 +55,14 @@ public:
 protected:
 
 private:
-    long long int table[HEIGHT][WIDTH] = {{3, 6, 0},
-                                          {1, 4, 2},
-                                          {7, 5, 8}};
-
-    int blankTileRow = 0;
-    int blankTileColumn = 2;
+    int blankTileRow = 2;
+    int blankTileColumn = 0;
     string actionName;
     State *previous;
     double heuristicValue;
+    long long int table[HEIGHT][WIDTH] = {{3, 6, 4},
+                                          {1, 7, 2},
+                                          {0, 5, 8}};
 };
 
 class StateComparator {

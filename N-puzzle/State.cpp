@@ -66,6 +66,10 @@ bool State::moveBlankTileUp(State &nextState) {
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileRow--;
         nextState.setPrevious(this);
+
+        stringstream actionName;
+        actionName << "Move tile number " << temporary << " down.";
+        nextState.setActionName(actionName.str());
         return true;
     }
     return false;
@@ -73,13 +77,16 @@ bool State::moveBlankTileUp(State &nextState) {
 
 bool State::moveBlankTileDown(State &nextState) {
     if (blankTileRow < HEIGHT - 1) {
-        // TODO: add action name to all the movements
         nextState = *this;
         int temporary = nextState.table[nextState.blankTileRow + 1][nextState.blankTileColumn];
         nextState.table[nextState.blankTileRow + 1][nextState.blankTileColumn] = BLANK;
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileRow++;
         nextState.setPrevious(this);
+
+        stringstream actionName;
+        actionName << "Move tile number " << temporary << " up.";
+        nextState.setActionName(actionName.str());
         return true;
     }
     return false;
@@ -93,6 +100,10 @@ bool State::moveBlankTileLeft(State &nextState) {
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileColumn--;
         nextState.setPrevious(this);
+
+        stringstream actionName;
+        actionName << "Move tile number " << temporary << " right.";
+        nextState.setActionName(actionName.str());
         return true;
     }
     return false;
@@ -107,6 +118,10 @@ bool State::moveBlankTileRight(State &nextState) {
         nextState.table[nextState.blankTileRow][nextState.blankTileColumn] = temporary;
         nextState.blankTileColumn++;
         nextState.setPrevious(this);
+
+        stringstream actionName;
+        actionName << "Move tile number " << temporary << " left.";
+        nextState.setActionName(actionName.str());
         return true;
     }
     return false;
