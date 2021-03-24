@@ -8,6 +8,10 @@ State::State() {
     setPrevious(nullptr);
 }
 
+State::State(bool isFinal) : State() {
+    if (isFinal) { this->setFinal(); }
+}
+
 bool State::moveBlankTileUp(State &nextState) {
     if (blankTileRow > 0) {
         nextState = *this;

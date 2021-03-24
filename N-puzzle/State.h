@@ -14,7 +14,9 @@ class State {
 public:
     State();
 
-    State &operator=(const State& other);
+    State(bool isFinal);
+
+    State &operator=(const State &other);
 
     bool operator==(const State &other) const;
 
