@@ -11,8 +11,8 @@ int main() {
     goal->setFinal();
 
     State *solution;
-    cout << "Initial:" << endl << initial->toString() << endl;
     cout << "Goal:" << endl << goal->toString() << endl;
+    cout << "Initial:" << endl << initial->toString() << endl;
 
     cout << endl << "DFS: ";
     solution = SearchExpert::depthFirstSearch2(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
@@ -23,11 +23,14 @@ int main() {
     solution = SearchExpert::breadthFirstSearch(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
     PrettyPrinter::printResults(solution, volumeOfAllocatedMemory, numberOfExaminedStates);
     cout << endl << solution->toString();
+//    cout << (*solution) << endl << endl;
 
+//    cout << "Initial:" << endl << initial->toString() << endl;
     cout << endl << "BestFS: ";
     solution = SearchExpert::bestFirstSearch(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
     PrettyPrinter::printResults(solution, volumeOfAllocatedMemory, numberOfExaminedStates);
     cout << endl << solution->toString();
+//    cout << (*solution) << endl << endl;
 
     delete initial;
     delete goal;

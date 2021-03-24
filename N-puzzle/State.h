@@ -14,7 +14,7 @@ class State {
 public:
     State();
 
-    State &operator=(State other);
+    State &operator=(const State& other);
 
     bool operator==(const State &other) const;
 
@@ -30,13 +30,13 @@ public:
 
     vector<State *> expand();
 
-    int getDepth();
+    unsigned short int getDepth();
 
-    void setHeuristicValue(double);
+    void setHeuristicValue(unsigned short int);
 
-    double getHeuristicValue() const;
+    unsigned short int getHeuristicValue() const;
 
-    int heuristic(State *) const;
+    unsigned short int heuristic(State *);
 
     void setActionName(string actionName) { this->actionName = actionName; }
 
@@ -55,14 +55,22 @@ public:
 protected:
 
 private:
-    int blankTileRow = 2;
-    int blankTileColumn = 0;
+    unsigned short int blankTileRow = 0;
+    unsigned short int blankTileColumn = 2;
     string actionName;
     State *previous;
-    double heuristicValue;
-    long long int table[HEIGHT][WIDTH] = {{3, 6, 4},
-                                          {1, 7, 2},
-                                          {0, 5, 8}};
+    unsigned short int heuristicValue;
+    unsigned short int table[HEIGHT][WIDTH] = {{3, 6, 0},
+                                               {1, 4, 2},
+                                               {7, 5, 8}};
+
+    unsigned short int swapBlankTileWithUp();
+
+    unsigned short int swapBlankTileWithDown();
+
+    unsigned short int swapBlankTileWithLeft();
+
+    unsigned short int swapBlankTileWithRight();
 };
 
 class StateComparator {
