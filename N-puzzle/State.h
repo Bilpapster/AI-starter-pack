@@ -5,22 +5,40 @@
 #define HEIGHT  3
 
 #include <string>
-#include <sstream>
 #include <vector>
 
 using namespace std;
 
 class State {
 public:
+
+    /* constructors */
+
     State();
 
-    State(bool isFinal);
+    explicit State(bool isFinal);
 
-    State &operator=(const State &other);
 
-    bool operator==(const State &other) const;
+    /* accessors */
 
-    string toString() const;
+    unsigned short getDepth() const { return this->depth; }
+
+    unsigned short getHeuristicValue() const { return heuristicValue; }
+
+    void setHeuristicValue(const unsigned short &value) { heuristicValue = value; }
+
+    string getActionName() const { return actionName; }
+
+    State *getPrevious() const { return previous; }
+
+    void setPrevious(State *previousState);
+
+    void setActionName(const string &name) { this->actionName = name; }
+
+    string getUniqueRepresentation() const;
+
+
+    /* available actions */
 
     bool moveBlankTileUp(State &nextState);
 
@@ -30,41 +48,39 @@ public:
 
     bool moveBlankTileRight(State &nextState);
 
-    vector<State *> expand();
 
-    unsigned short int getDepth();
-
-    void setHeuristicValue(unsigned short int);
-
-    unsigned short int getHeuristicValue() const;
+    /* heuristic function */
 
     unsigned short int heuristic(State *);
 
-    void setActionName(string actionName) { this->actionName = actionName; }
+    vector<State *> expand();
 
-    string getActionName() const { return actionName; }
-
-    void setPrevious(State *previous) { this->previous = previous; }
-
-    State *getPrevious() const { return previous; }
-
-    friend ostream &operator<<(ostream &, const State &);
-
-    string getUniqueRepresentation() const;
+    string toString() const;
 
     void setFinal();
 
-protected:
+    /* overloaded operators */
+
+    friend ostream &operator<<(ostream &, const State &);
+
+    State &operator=(const State &other);
+
+    bool operator==(const State &other) const;
+
 
 private:
-    unsigned short int blankTileRow = 0;
-    unsigned short int blankTileColumn = 2;
+    unsigned short blankTileRow = 0;
+    unsigned short blankTileColumn = 2;
+    unsigned short heuristicValue;
+    unsigned short depth = 0;
     string actionName;
     State *previous;
-    unsigned short int heuristicValue;
-    unsigned short int table[HEIGHT][WIDTH] = {{3, 6, 0},
-                                               {1, 4, 2},
-                                               {7, 5, 8}};
+    unsigned short table[HEIGHT][WIDTH] = {{3, 6, 0},
+                                           {1, 4, 2},
+                                           {7, 5, 8}};
+
+
+    /* auxiliary functions used inside the action methods */
 
     unsigned short int swapBlankTileWithUp();
 

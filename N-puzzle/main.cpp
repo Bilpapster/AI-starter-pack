@@ -25,6 +25,10 @@ int main() {
     solution = SearchExpert::bestFirstSearch(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
     PrettyPrinter::printResults(solution, volumeOfAllocatedMemory, numberOfExaminedStates);
 
+    cout << endl << "A*: ";
+    solution = SearchExpert::AStarSearch(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
+    PrettyPrinter::printResults(solution, volumeOfAllocatedMemory, numberOfExaminedStates);
+
     delete initial;
     delete goal;
 

@@ -15,6 +15,9 @@ public:
 
     static State *bestFirstSearch(State *initial, State *goal,
                                   long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
+
+    static State *AStarSearch(State *initial, State *goal,
+                                  long long &numberOfExaminedStates, long long &volumeOfAllocatedMemory);
 };
 
 #endif //AI_STARTER_PACK_IN_CPP_SEARCH_EXPERT_H

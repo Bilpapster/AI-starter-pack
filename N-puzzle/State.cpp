@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "State.h"
 
 #define BLANK 0
@@ -118,15 +119,12 @@ vector<State *> State::expand() {
     return children;
 }
 
-unsigned short int State::getDepth() {
-    unsigned short int depth = 0;
-    State *previousState = this;
-    while (previousState->previous != nullptr) {
-        previousState = previousState->previous;
-        depth++;
-    }
-    return depth;
+void State::setPrevious(State *previousState) {
+    this->previous = previousState;
+    if (previousState) { this->depth = previousState->depth + 1; }
 }
+
+
 
 string State::toString() const {
     stringstream stateDescription;
@@ -156,14 +154,6 @@ unsigned short int State::heuristic(State *goalState) {
     }
     table[blankTileRow][blankTileColumn] = BLANK;
     return distance;
-}
-
-void State::setHeuristicValue(unsigned short int value) {
-    heuristicValue = value;
-}
-
-unsigned short int State::getHeuristicValue() const {
-    return heuristicValue;
 }
 
 string State::getUniqueRepresentation() const {
@@ -199,6 +189,7 @@ State &State::operator=(const State &other) {
     }
     this->blankTileRow = other.blankTileRow;
     this->blankTileColumn = other.blankTileColumn;
+    this->depth = other.depth;
     this->previous = other.previous;
     this->actionName = other.actionName;
     return *this;
