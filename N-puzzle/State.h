@@ -51,7 +51,7 @@ public:
 
     /* heuristic function */
 
-    unsigned short int heuristic(State *);
+    unsigned short int heuristic();
 
     vector<State *> expand();
 
@@ -75,6 +75,15 @@ private:
     unsigned short depth = 0;
     string actionName;
     State *previous;
+//    unsigned short table[HEIGHT][WIDTH] = {{5, 15, 14, 1},
+//                                           {11, 12, 8, 6},
+//                                           {4, 0, 3, 13},
+//                                           {10, 7, 9, 2}};
+
+//    unsigned short table[HEIGHT][WIDTH] = {{5, 15, 6, 14},
+//                                           {1, 8, 9, 0},
+//                                           {12, 11, 2, 13},
+//                                           {4, 10, 3, 7}};
     unsigned short table[HEIGHT][WIDTH] = {{3, 6, 0},
                                            {1, 4, 2},
                                            {7, 5, 8}};

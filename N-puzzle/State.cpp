@@ -140,7 +140,7 @@ string State::toString() const {
     return stateDescription.str();
 }
 
-unsigned short int State::heuristic(State *goalState) {
+unsigned short int State::heuristic() {
 
     unsigned short int distance = 0, row, correctRow, column, correctColumn;
     table[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
