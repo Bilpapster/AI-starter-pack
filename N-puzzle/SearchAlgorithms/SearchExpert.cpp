@@ -24,6 +24,8 @@ void SearchExpert::executeAvailableAlgorithms(State *initial, State *goal) {
         printResults(searchAlgorithm, solution, numberOfExaminedStates, volumeOfAllocatedMemory, millisElapsedOnSearch);
     }
 
+    destructSearchAlgorithms(searchAlgorithms);
+
 }
 
 void SearchExpert::initializeSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms) {
@@ -51,4 +53,12 @@ void SearchExpert::printResults(const SearchAlgorithm *searchAlgorithm,
     }
     cout << endl << endl;
 
+}
+
+void SearchExpert::destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms) {
+    for (SearchAlgorithm *searchAlgorithm : (*searchAlgorithms)) {
+        delete searchAlgorithm;
+    }
+
+    delete searchAlgorithms;
 }

@@ -9,7 +9,7 @@ class SearchAlgorithm {
 public:
     SearchAlgorithm();
 
-    ~SearchAlgorithm();
+    virtual ~SearchAlgorithm();
 
     virtual string getAlgorithmName() const = 0;
 

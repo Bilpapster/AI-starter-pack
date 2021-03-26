@@ -21,6 +21,7 @@ private:
                              const double &millisElapsedOnSearch);
 
 
+    static void destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms);
 };
 
 #endif //AI_STARTER_PACK_IN_CPP_SEARCH_EXPERT_H
