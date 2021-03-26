@@ -1,5 +1,5 @@
-#ifndef AI_STARTER_PACK_IN_CPP_SEARCH_ALGORITHM_H
-#define AI_STARTER_PACK_IN_CPP_SEARCH_ALGORITHM_H
+#ifndef SEARCH_ALGORITHM_H
+#define SEARCH_ALGORITHM_H
 
 #include <unordered_map>
 #include <N-puzzle/StateModel/State.h>
@@ -33,4 +33,4 @@ protected:
 };
 
 
-#endif //AI_STARTER_PACK_IN_CPP_SEARCH_ALGORITHM_H
+#endif //SEARCH_ALGORITHM_H

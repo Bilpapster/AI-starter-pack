@@ -20,7 +20,7 @@ void SearchExpert::executeAvailableAlgorithms(State *initial, State *goal) {
     for (SearchAlgorithm *searchAlgorithm : (*searchAlgorithms)) {
         clock_t start = clock();
         solution = searchAlgorithm->search(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
-        double millisElapsedOnSearch = (double) (clock() - start) / CLOCKS_PER_SEC * 1000;
+        double millisElapsedOnSearch = (clock() - start);
         printResults(searchAlgorithm, solution, numberOfExaminedStates, volumeOfAllocatedMemory, millisElapsedOnSearch);
     }
 

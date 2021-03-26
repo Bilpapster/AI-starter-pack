@@ -1,5 +1,5 @@
-#ifndef AI_STARTER_PACK_IN_CPP_SEARCH_EXPERT_H
-#define AI_STARTER_PACK_IN_CPP_SEARCH_EXPERT_H
+#ifndef SEARCH_EXPERT_H
+#define SEARCH_EXPERT_H
 
 #include "N-puzzle/StateModel/State.h"
 #include "SearchAlgorithm.h"
@@ -24,4 +24,4 @@ private:
     static void destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms);
 };
 
-#endif //AI_STARTER_PACK_IN_CPP_SEARCH_EXPERT_H
+#endif //SEARCH_EXPERT_H
