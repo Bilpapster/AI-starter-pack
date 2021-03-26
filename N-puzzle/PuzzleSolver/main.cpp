@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SearchExpert.h"
+#include "N-puzzle/SearchAlgorithms/SearchExpert.h"
 
 int main() {
     State *initial = new State();

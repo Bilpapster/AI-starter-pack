@@ -1,9 +1,9 @@
-#ifndef AI_STARTER_PACK_IN_CPP_BREADTH_FIRST_SEARCH_ALGORITHM_H
-#define AI_STARTER_PACK_IN_CPP_BREADTH_FIRST_SEARCH_ALGORITHM_H
+#ifndef BREADTH_FIRST_SEARCH_ALGORITHM_H
+#define BREADTH_FIRST_SEARCH_ALGORITHM_H
 
 
 #include <queue>
-#include "State.h"
+#include "N-puzzle/StateModel/State.h"
 #include "SearchAlgorithm.h"
 
 class BreadthFirstSearchAlgorithm : public SearchAlgorithm {
@@ -29,4 +29,4 @@ protected:
 };
 
 
-#endif //AI_STARTER_PACK_IN_CPP_BREADTH_FIRST_SEARCH_ALGORITHM_H
+#endif //BREADTH_FIRST_SEARCH_ALGORITHM_H

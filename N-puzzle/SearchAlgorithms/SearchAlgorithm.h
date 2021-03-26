@@ -2,7 +2,7 @@
 #define AI_STARTER_PACK_IN_CPP_SEARCH_ALGORITHM_H
 
 #include <unordered_map>
-#include "State.h"
+#include <N-puzzle/StateModel/State.h>
 
 class SearchAlgorithm {
 

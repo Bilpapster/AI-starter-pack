@@ -1,5 +1,5 @@
-#ifndef AI_STARTER_PACK_IN_CPP_BEST_FIRST_ALGORITHM_H
-#define AI_STARTER_PACK_IN_CPP_BEST_FIRST_ALGORITHM_H
+#ifndef BEST_FIRST_ALGORITHM_H
+#define BEST_FIRST_ALGORITHM_H
 
 #include <queue>
 #include "SearchAlgorithm.h"
@@ -29,4 +29,4 @@ protected:
 };
 
 
-#endif //AI_STARTER_PACK_IN_CPP_BEST_FIRST_ALGORITHM_H
+#endif //BEST_FIRST_ALGORITHM_H

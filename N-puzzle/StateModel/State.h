@@ -1,5 +1,5 @@
-#ifndef AI_STARTER_PACK_IN_CPP_STATE_H
-#define AI_STARTER_PACK_IN_CPP_STATE_H
+#ifndef STATE_H
+#define STATE_H
 
 #define WIDTH  3
 #define HEIGHT  3
@@ -107,4 +107,4 @@ public:
     }
 };
 
-#endif //AI_STARTER_PACK_IN_CPP_STATE_H
+#endif //STATE_H
