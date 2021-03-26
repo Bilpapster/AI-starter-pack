@@ -32,7 +32,7 @@ void BestFirstSearchAlgorithm::performActionsOnUnvisited(State *&state) {
 }
 
 unsigned short BestFirstSearchAlgorithm::defineHeuristicValueOf(State *&state) {
-    return state->heuristic();
+    return state->manhattanDistance();
 }
 
 BestFirstSearchAlgorithm::~BestFirstSearchAlgorithm() {

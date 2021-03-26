@@ -7,11 +7,19 @@
 class SearchAlgorithm {
 
 public:
+    /* constructor & destructor */
+
     SearchAlgorithm();
 
     virtual ~SearchAlgorithm();
 
+
+    /* getter for the name of the algorithm */
+
     virtual string getAlgorithmName() const = 0;
+
+
+    /* abstract search method */
 
     State *search(State *initial, State *goal,
                   long long &numberOfExaminedStates,
@@ -19,7 +27,11 @@ public:
 
 protected:
 
-    unordered_map<string, State *>* closedStates;
+    unordered_map<string, State *> *closedStates;
+
+
+    /*  abstract utility functions for the searching procedure
+     * the methods are going to be specialized by the subclasses */
 
     virtual void pushToSearchFrontier(State *stateToPush) = 0;
 

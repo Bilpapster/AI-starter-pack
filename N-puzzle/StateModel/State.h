@@ -35,7 +35,7 @@ public:
 
     void setActionName(const string &name) { this->actionName = name; }
 
-    string getUniqueRepresentation() const;
+    string getUniqueEncoding() const;
 
 
     /* available actions */
@@ -49,15 +49,19 @@ public:
     bool moveBlankTileRight(State &nextState);
 
 
-    /* heuristic function */
+    /* manhattanDistance function */
 
-    unsigned short int heuristic();
+    unsigned short int manhattanDistance();
+
+
+    /* utility functions */
 
     vector<State *> expand();
 
     string toString() const;
 
     void setFinal();
+
 
     /* overloaded operators */
 
@@ -75,21 +79,12 @@ private:
     unsigned short depth = 0;
     string actionName;
     State *previous;
-//    unsigned short table[HEIGHT][WIDTH] = {{5, 15, 14, 1},
-//                                           {11, 12, 8, 6},
-//                                           {4, 0, 3, 13},
-//                                           {10, 7, 9, 2}};
-
-//    unsigned short table[HEIGHT][WIDTH] = {{5, 15, 6, 14},
-//                                           {1, 8, 9, 0},
-//                                           {12, 11, 2, 13},
-//                                           {4, 10, 3, 7}};
     unsigned short table[HEIGHT][WIDTH] = {{3, 6, 0},
                                            {1, 4, 2},
                                            {7, 5, 8}};
 
 
-    /* auxiliary functions used inside the action methods */
+    /* auxiliary functions utilized inside the action methods */
 
     unsigned short int swapBlankTileWithUp();
 
@@ -100,8 +95,20 @@ private:
     unsigned short int swapBlankTileWithRight();
 };
 
+/**
+ * A simple class representing a comparator between two state objects.
+ * The state objects are compared in terms of their manhattanDistance value.
+ */
 class StateComparator {
 public:
+    /**
+     * Between two state objects, the one with the greater manhattanDistance value is deemed as
+     * the greater between the two.
+     *
+     * @param leftStatePointer  the state placed on the left side of the comparison
+     * @param rightStatePointer the state placed on the right side of the comparison
+     * @return true (> 0) if left > right, else false (0).
+     */
     int operator()(State *leftStatePointer, State *rightStatePointer) const {
         return leftStatePointer->getHeuristicValue() > rightStatePointer->getHeuristicValue();
     }
