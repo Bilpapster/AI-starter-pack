@@ -2,8 +2,8 @@
 #define AI_STARTER_PACK_IN_CPP_DEPTH_FIRST_SEARCH_ALGORITHM_H
 
 
-#include "SearchAlgorithm.h"
 #include <stack>
+#include "SearchAlgorithm.h"
 
 class DepthFirstSearchAlgorithm : public SearchAlgorithm {
 public:

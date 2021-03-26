@@ -1,12 +1,5 @@
 #include <iostream>
-#include <ctime>
-
 #include "SearchExpert.h"
-#include "PrettyPrinter.h"
-#include "DepthFirstSearchAlgorithm.h"
-#include "BreadthFirstSearchAlgorithm.h"
-#include "BestFirstSearchAlgorithm.h"
-#include "AStarSearchAlgorithm.h"
 
 int main() {
     State *initial = new State();

@@ -6,8 +6,8 @@ void PrettyPrinter::printResults(State *solutionState,
                                  const long long int &numberOfExaminedStates) {
     if (solutionState != nullptr) {
         cout << "depth = " << solutionState->getDepth()
-             << ", Mem: " << volumeOfAllocatedMemory
-             << ", Examined: " << numberOfExaminedStates << endl;
+             << ", Memory: " << volumeOfAllocatedMemory
+             << ", Examined States: " << numberOfExaminedStates << endl;
         cout << solutionState->toString() << endl;
     } else
         cout << "Problem unsolvable" << endl;

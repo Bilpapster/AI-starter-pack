@@ -3,8 +3,8 @@
 
 
 #include <queue>
-#include "SearchAlgorithm.h"
 #include "State.h"
+#include "SearchAlgorithm.h"
 
 class BreadthFirstSearchAlgorithm : public SearchAlgorithm {
 public:
