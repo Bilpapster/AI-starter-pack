@@ -6,14 +6,29 @@
 
 class BestFirstSearchAlgorithm : public SearchAlgorithm {
 public:
+
+    /* constructor & destructor */
+
     BestFirstSearchAlgorithm();
 
-    ~BestFirstSearchAlgorithm();
+    ~BestFirstSearchAlgorithm() override;
+
+
+    /* utility getter  */
 
     string getAlgorithmName() const override;
 
 protected:
+
+    /* in BestFS the searchFrontier is implemented
+     * as a priority queue (max) of state pointers  */
+
     priority_queue<State *, vector<State *>, StateComparator> *searchFrontier;
+
+
+    /* utility functions that are derived as abstract
+     * from the abstract super class and implemented
+     * especially based on the BestFS way of searching */
 
     void pushToSearchFrontier(State *stateToPush) override;
 

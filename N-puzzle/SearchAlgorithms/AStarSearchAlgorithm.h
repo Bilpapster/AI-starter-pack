@@ -6,6 +6,8 @@
 
 class AStarSearchAlgorithm : public BestFirstSearchAlgorithm {
 public:
+
+    /* utility getter  */
     string getAlgorithmName() const override;
 
 
