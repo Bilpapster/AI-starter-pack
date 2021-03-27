@@ -52,7 +52,8 @@ bool State::moveBlankTileUp(State &nextState) {
     if (blankTileRow > 0) {
         nextState = *this;
         stringstream actionDescription;
-        actionDescription << "Move tile number " << nextState.swapBlankTileWithUp() << " down." << endl;
+        actionDescription << "Move tile number " << nextState.swapBlankTileWithUp()
+                          << " down." << endl;
         nextState.setActionName(actionDescription.str());
         nextState.setPrevious(this);
         return true;
@@ -97,7 +98,8 @@ bool State::moveBlankTileDown(State &nextState) {
     if (blankTileRow < HEIGHT - 1) {
         nextState = *this;
         stringstream actionDescription;
-        actionDescription << "Move tile number " << nextState.swapBlankTileWithDown() << " up." << endl;
+        actionDescription << "Move tile number " << nextState.swapBlankTileWithDown()
+                          << " up." << endl;
         nextState.setActionName(actionDescription.str());
         nextState.setPrevious(this);
         return true;
@@ -142,7 +144,8 @@ bool State::moveBlankTileLeft(State &nextState) {
     if (blankTileColumn > 0) {
         nextState = *this;
         stringstream actionDescription;
-        actionDescription << "Move tile number " << nextState.swapBlankTileWithLeft() << " right." << endl;
+        actionDescription << "Move tile number " << nextState.swapBlankTileWithLeft()
+                          << " right." << endl;
         nextState.setActionName(actionDescription.str());
         nextState.setPrevious(this);
         return true;
@@ -187,7 +190,8 @@ bool State::moveBlankTileRight(State &nextState) {
     if (blankTileColumn < WIDTH - 1) {
         nextState = *this;
         stringstream actionDescription;
-        actionDescription << "Move tile number " << nextState.swapBlankTileWithRight() << " left." << endl;
+        actionDescription << "Move tile number " << nextState.swapBlankTileWithRight()
+                          << " left." << endl;
         nextState.setActionName(actionDescription.str());
         nextState.setPrevious(this);
         return true;
