@@ -309,6 +309,31 @@ unsigned short int State::manhattanDistance() {
 }
 
 /**
+ * Evaluates the number of misplaced tiles in the current snapshot of
+ * the puzzle. A tile is considered misplaced when either its row or
+ * column does not match with the goal state. A puzzle snapshot is
+ * considered goal state when all tiles are in ascending order (starting
+ * from 1) and the blank tile is placed on the bottom left corner of the
+ * puzzle.
+ *
+ * @return the number of misplaced tiles.
+ */
+unsigned short int State::misplacedTiles() {
+    unsigned short int tilesOutOfPlace = 0, row, correctRow, column, correctColumn;
+    table[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
+
+    for (row = 0; row < HEIGHT; row++) {
+        for (column = 0; column < WIDTH; column++) {
+            correctRow = (this->table[row][column] - 1) / WIDTH;
+            correctColumn = (this->table[row][column] - 1) % WIDTH;
+            if (row != correctRow || column != correctColumn) tilesOutOfPlace++;
+        }
+    }
+    table[blankTileRow][blankTileColumn] = BLANK;
+    return tilesOutOfPlace;
+}
+
+/**
  * Constructs the unique string encoding of the current state.
  * The string contains the tiles from the upper left corner
  * up to the bottom right corner, separated by dash.

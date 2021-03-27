@@ -49,9 +49,11 @@ public:
     bool moveBlankTileRight(State &nextState);
 
 
-    /* manhattanDistance function */
+    /* heuristic functions */
 
     unsigned short int manhattanDistance();
+
+    unsigned short int misplacedTiles();
 
 
     /* utility functions */
