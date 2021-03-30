@@ -1,6 +1,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <queue>
 #include <ctime>
 
@@ -21,9 +22,17 @@ void SearchExpert::executeAvailableAlgorithms(State *initial, State *goal) {
         clock_t start = clock();
         solution = searchAlgorithm->search(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
         double millisElapsedOnSearch = (clock() - start);
-        printResults(searchAlgorithm, solution, numberOfExaminedStates, volumeOfAllocatedMemory, millisElapsedOnSearch);
-    }
+//        printResultsToConsole(searchAlgorithm, solution,
+//                              numberOfExaminedStates,
+//                              volumeOfAllocatedMemory,
+//                              millisElapsedOnSearch);
 
+        printResultsToFile(searchAlgorithm, solution,
+                              numberOfExaminedStates,
+                              volumeOfAllocatedMemory,
+                              millisElapsedOnSearch);
+    }
+    changeLineInFile();
     destructSearchAlgorithms(searchAlgorithms);
 
 }
@@ -35,11 +44,11 @@ void SearchExpert::initializeSearchAlgorithms(vector<SearchAlgorithm *> *&search
     searchAlgorithms->push_back(new AStarSearchAlgorithm());
 }
 
-void SearchExpert::printResults(const SearchAlgorithm *searchAlgorithm,
-                                const State *solutionState,
-                                const long long int &numberOfExaminedStates,
-                                const long long int &volumeOfAllocatedMemory,
-                                const double &millisElapsedOnSearch) {
+void SearchExpert::printResultsToConsole(const SearchAlgorithm *searchAlgorithm,
+                                         const State *solutionState,
+                                         const long long int &numberOfExaminedStates,
+                                         const long long int &volumeOfAllocatedMemory,
+                                         const double &millisElapsedOnSearch) {
 
     if (solutionState) {
         cout << endl << "  --> " << searchAlgorithm->getAlgorithmName() << endl << endl
@@ -55,10 +64,33 @@ void SearchExpert::printResults(const SearchAlgorithm *searchAlgorithm,
 
 }
 
+void SearchExpert::printResultsToFile(const SearchAlgorithm *searchAlgorithm, const State *solutionState,
+                                      const long long int &numberOfExaminedStates,
+                                      const long long int &volumeOfAllocatedMemory,
+                                      const double &millisElapsedOnSearch) {
+    ofstream outputFile;
+    outputFile.open("Reports.txt", ios_base::app);
+    if (solutionState) {
+        outputFile << numberOfExaminedStates << " "
+                   << volumeOfAllocatedMemory << " "
+                   << solutionState->getDepth() << " ";
+    } else
+        outputFile << "Unsolvable" << " ";
+    outputFile.close();
+}
+
 void SearchExpert::destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms) {
     for (SearchAlgorithm *searchAlgorithm : (*searchAlgorithms)) {
         delete searchAlgorithm;
     }
 
     delete searchAlgorithms;
+}
+
+void SearchExpert::changeLineInFile() {
+    ofstream outputFile;
+    outputFile.open("Reports.txt", ios_base::app);
+    outputFile << endl;
+    outputFile.close();
+
 }

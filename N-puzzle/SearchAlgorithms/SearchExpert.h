@@ -14,11 +14,19 @@ public:
 private:
     static void initializeSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms);
 
-    static void printResults(const SearchAlgorithm *searchAlgorithm,
-                             const State *solutionState,
-                             const long long &numberOfExaminedStates,
-                             const long long &volumeOfAllocatedMemory,
-                             const double &millisElapsedOnSearch);
+    static void printResultsToConsole(const SearchAlgorithm *searchAlgorithm,
+                                      const State *solutionState,
+                                      const long long &numberOfExaminedStates,
+                                      const long long &volumeOfAllocatedMemory,
+                                      const double &millisElapsedOnSearch);
+
+    static void printResultsToFile(const SearchAlgorithm *searchAlgorithm,
+                                      const State *solutionState,
+                                      const long long &numberOfExaminedStates,
+                                      const long long &volumeOfAllocatedMemory,
+                                      const double &millisElapsedOnSearch);
+
+    static void changeLineInFile();
 
 
     static void destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms);

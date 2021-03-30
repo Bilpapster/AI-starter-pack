@@ -30,6 +30,10 @@ State::State(bool isFinal) : State() {
     if (isFinal) { this->setFinal(); }
 }
 
+State::State(const unsigned short *array) : State() {
+    this->setFromArray(array);
+}
+
 /**
  * Checks whether moving the blank tile one row up is a valid action,
  * based on the current state.
@@ -70,9 +74,9 @@ bool State::moveBlankTileUp(State &nextState) {
  * @return the number of the tile that was exchanged with the blank one.
  */
 unsigned short int State::swapBlankTileWithUp() {
-    unsigned short int numberMovingDown = table[blankTileRow - 1][blankTileColumn];
-    table[blankTileRow][blankTileColumn] = numberMovingDown;
-    table[--blankTileRow][blankTileColumn] = BLANK;
+    unsigned short int numberMovingDown = board[blankTileRow - 1][blankTileColumn];
+    board[blankTileRow][blankTileColumn] = numberMovingDown;
+    board[--blankTileRow][blankTileColumn] = BLANK;
     return numberMovingDown;
 }
 
@@ -116,9 +120,9 @@ bool State::moveBlankTileDown(State &nextState) {
  * @return the number of the tile that was exchanged with the blank one.
  */
 unsigned short int State::swapBlankTileWithDown() {
-    unsigned short int numberMovingUp = table[blankTileRow + 1][blankTileColumn];
-    table[blankTileRow][blankTileColumn] = numberMovingUp;
-    table[++blankTileRow][blankTileColumn] = BLANK;
+    unsigned short int numberMovingUp = board[blankTileRow + 1][blankTileColumn];
+    board[blankTileRow][blankTileColumn] = numberMovingUp;
+    board[++blankTileRow][blankTileColumn] = BLANK;
     return numberMovingUp;
 }
 
@@ -162,9 +166,9 @@ bool State::moveBlankTileLeft(State &nextState) {
  * @return the number of the tile that was exchanged with the blank one.
  */
 unsigned short int State::swapBlankTileWithLeft() {
-    unsigned short int numberMovingRight = table[blankTileRow][blankTileColumn - 1];
-    table[blankTileRow][blankTileColumn] = numberMovingRight;
-    table[blankTileRow][--blankTileColumn] = BLANK;
+    unsigned short int numberMovingRight = board[blankTileRow][blankTileColumn - 1];
+    board[blankTileRow][blankTileColumn] = numberMovingRight;
+    board[blankTileRow][--blankTileColumn] = BLANK;
     return numberMovingRight;
 }
 
@@ -208,9 +212,9 @@ bool State::moveBlankTileRight(State &nextState) {
  * @return the number of the tile that was exchanged with the blank one.
  */
 unsigned short int State::swapBlankTileWithRight() {
-    unsigned short int numberMovingLeft = table[blankTileRow][blankTileColumn + 1];
-    table[blankTileRow][blankTileColumn] = numberMovingLeft;
-    table[blankTileRow][++blankTileColumn] = BLANK;
+    unsigned short int numberMovingLeft = board[blankTileRow][blankTileColumn + 1];
+    board[blankTileRow][blankTileColumn] = numberMovingLeft;
+    board[blankTileRow][++blankTileColumn] = BLANK;
     return numberMovingLeft;
 }
 
@@ -269,7 +273,7 @@ void State::setPrevious(State *previousState) {
 
 /**
  * A utility function that forms the string representation of the current
- * state. The string contains the puzzle snapshot as a table, as well as
+ * state. The string contains the puzzle snapshot as a board, as well as
  * the row and column position of the blank tile.
  *
  * @return the string representation of the current state.
@@ -278,7 +282,7 @@ string State::toString() const {
     stringstream stateDescription;
     for (unsigned short int row = 0; row < HEIGHT; row++) {
         for (unsigned short int column = 0; column < WIDTH; column++) {
-            stateDescription << this->table[row][column] << " ";
+            stateDescription << this->board[row][column] << " ";
         }
         stateDescription << endl;
     }
@@ -299,16 +303,16 @@ string State::toString() const {
 unsigned short int State::manhattanDistance() {
 
     unsigned short int distance = 0, row, correctRow, column, correctColumn;
-    table[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
+    board[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
 
     for (row = 0; row < HEIGHT; row++) {
         for (column = 0; column < WIDTH; column++) {
-            correctRow = (this->table[row][column] - 1) / WIDTH;
-            correctColumn = (this->table[row][column] - 1) % WIDTH;
+            correctRow = (this->board[row][column] - 1) / WIDTH;
+            correctColumn = (this->board[row][column] - 1) % WIDTH;
             distance += abs(row - correctRow) + abs(column - correctColumn);
         }
     }
-    table[blankTileRow][blankTileColumn] = BLANK;
+    board[blankTileRow][blankTileColumn] = BLANK;
     return distance;
 }
 
@@ -324,16 +328,16 @@ unsigned short int State::manhattanDistance() {
  */
 unsigned short int State::misplacedTiles() {
     unsigned short int tilesOutOfPlace = 0, row, correctRow, column, correctColumn;
-    table[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
+    board[blankTileRow][blankTileColumn] = WIDTH * HEIGHT;
 
     for (row = 0; row < HEIGHT; row++) {
         for (column = 0; column < WIDTH; column++) {
-            correctRow = (this->table[row][column] - 1) / WIDTH;
-            correctColumn = (this->table[row][column] - 1) % WIDTH;
+            correctRow = (this->board[row][column] - 1) / WIDTH;
+            correctColumn = (this->board[row][column] - 1) % WIDTH;
             if (row != correctRow || column != correctColumn) tilesOutOfPlace++;
         }
     }
-    table[blankTileRow][blankTileColumn] = BLANK;
+    board[blankTileRow][blankTileColumn] = BLANK;
     return tilesOutOfPlace;
 }
 
@@ -346,7 +350,7 @@ unsigned short int State::misplacedTiles() {
  */
 string State::getUniqueEncoding() const {
     stringstream dashboardRepresentation;
-    for (auto &row : this->table) {
+    for (auto &row : this->board) {
         for (unsigned short column : row) {
             dashboardRepresentation << column << "-";
         }
@@ -362,14 +366,29 @@ string State::getUniqueEncoding() const {
  */
 void State::setFinal() {
     unsigned short number = 1;
-    for (auto &row : this->table) {
+    for (auto &row : this->board) {
         for (unsigned short &column : row) {
             column = number++;
         }
     }
     this->blankTileRow = HEIGHT - 1;
     this->blankTileColumn = WIDTH - 1;
-    this->table[blankTileRow][blankTileColumn] = BLANK;
+    this->board[blankTileRow][blankTileColumn] = BLANK;
+}
+
+void State::setFromArray(const unsigned short *array) {
+    unsigned short row, column, index = 0, number;
+
+    for (row = 0; row < HEIGHT; row++) {
+        for (column = 0; column < WIDTH; column++) {
+            number = array[index++];
+            this->board[row][column] = number;
+            if (number == BLANK) {
+                this->blankTileRow = row;
+                this->blankTileColumn = column;
+            }
+        }
+    }
 }
 
 /**
@@ -385,7 +404,7 @@ State &State::operator=(const State &other) {
     unsigned short row, column;
     for (row = 0; row < HEIGHT; row++) {
         for (column = 0; column < WIDTH; column++) {
-            this->table[row][column] = other.table[row][column];
+            this->board[row][column] = other.board[row][column];
         }
     }
     this->blankTileRow = other.blankTileRow;
@@ -413,7 +432,7 @@ bool State::operator==(const State &other) const {
     unsigned short row, column;
     for (row = 0; row < HEIGHT; row++) {
         for (column = 0; column < WIDTH; column++) {
-            if (this->table[row][column] != other.table[row][column]) { return false; }
+            if (this->board[row][column] != other.board[row][column]) { return false; }
         }
     }
     return true;

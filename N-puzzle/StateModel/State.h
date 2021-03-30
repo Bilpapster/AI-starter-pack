@@ -16,6 +16,8 @@ public:
 
     State();
 
+    State(const unsigned short *array);
+
     explicit State(bool isFinal);
 
 
@@ -64,6 +66,8 @@ public:
 
     void setFinal();
 
+    void setFromArray(const unsigned short *array);
+
 
     /* overloaded operators */
 
@@ -81,7 +85,7 @@ private:
     unsigned short depth = 0;
     string actionName;
     State *previous;
-    unsigned short table[HEIGHT][WIDTH] = {{3, 6, 0},
+    unsigned short board[HEIGHT][WIDTH] = {{3, 6, 0},
                                            {1, 4, 2},
                                            {7, 5, 8}};
 

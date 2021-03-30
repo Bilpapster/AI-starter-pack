@@ -1,4 +1,6 @@
 #include <iostream>
+#include <random>
+#include <N-puzzle/Statistics/StatisticsWizard.h>
 #include "N-puzzle/SearchAlgorithms/SearchExpert.h"
 
 /**
@@ -9,12 +11,20 @@
  * @return 0 as normal execution code
  */
 int main() {
-    State *initial = new State();
+
     State *goal = new State(true);
 
-    SearchExpert::executeAvailableAlgorithms(initial, goal);
+    for (int i = 0; i < 2; i++) {
+        State *initial = new State();
+        StatisticsWizard::initializeRandomPuzzle(initial);
+        cout << "Random generated puzzle to solve:" << endl
+                << initial->toString() << endl;
 
-    delete initial;
+        SearchExpert::executeAvailableAlgorithms(initial, goal);
+        delete initial;
+        cout << "----------------------------------------------" << endl;
+    }
+
     delete goal;
 
     return 0;
