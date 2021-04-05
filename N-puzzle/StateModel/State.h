@@ -1,11 +1,9 @@
 #ifndef STATE_H
 #define STATE_H
 
-#define WIDTH  3
-#define HEIGHT  3
-
 #include <string>
 #include <vector>
+#include <N-puzzle/DefaultDefinitions/Macros.h>
 
 using namespace std;
 
@@ -79,15 +77,13 @@ public:
 
 
 private:
-    unsigned short blankTileRow = 0;
-    unsigned short blankTileColumn = 2;
+    unsigned short blankTileRow = DEFAULT_BLANK_TILE_ROW;
+    unsigned short blankTileColumn = DEFAULT_BLANK_TILE_COLUMN;
     unsigned short heuristicValue;
     unsigned short depth = 0;
     string actionName;
     State *previous;
-    unsigned short board[HEIGHT][WIDTH] = {{3, 6, 0},
-                                           {1, 4, 2},
-                                           {7, 5, 8}};
+    unsigned short board[HEIGHT][WIDTH] = DEFAULT_PUZZLE;
 
 
     /* auxiliary functions utilized inside the action methods */

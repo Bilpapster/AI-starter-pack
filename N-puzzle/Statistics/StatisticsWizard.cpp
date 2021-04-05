@@ -3,10 +3,16 @@
 #include <random>
 
 #include "StatisticsWizard.h"
-#define NUMBER_OF_TILES_IN_PUZZLE 9
+#include <N-puzzle/DefaultDefinitions/Macros.h>
 
 void StatisticsWizard::initializeRandomPuzzle(State *&initial) {
-    unsigned short array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+
+
+    unsigned short array[NUMBER_OF_TILES_IN_PUZZLE];
+
+    for (unsigned short tile = 0; tile < NUMBER_OF_TILES_IN_PUZZLE; tile++) {
+        array[tile] = tile;
+    }
     auto seed = time(nullptr);
     shuffle(array, array + NUMBER_OF_TILES_IN_PUZZLE, default_random_engine(seed));
     initial->setFromArray(array);

@@ -45,8 +45,14 @@ State *SearchAlgorithm::search(State *initial, State *goal,
             closedStates->insert(k);
             vector<State *> children = currentlyExaminingState->expand();
             for (auto &child : children)
-                if (closedStates->count(child->getUniqueEncoding()) == 0)
+                if (closedStates->count(child->getUniqueEncoding()) == 0) {
                     performActionsOnUnvisited(child);
+                } else {
+                    delete child;
+                }
+
+        } else {
+            delete currentlyExaminingState;
         }
     }
     return nullptr;

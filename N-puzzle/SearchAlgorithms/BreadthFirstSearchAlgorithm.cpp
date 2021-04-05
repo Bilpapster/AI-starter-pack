@@ -83,5 +83,9 @@ void BreadthFirstSearchAlgorithm::performActionsOnUnvisited(State *&state) {
  * the closed set unordered map.
  */
 BreadthFirstSearchAlgorithm::~BreadthFirstSearchAlgorithm() {
+    while (!searchFrontierIsEmpty()) {
+        delete extractTopFromSearchFrontier();
+    }
+
     delete searchFrontier;
 }

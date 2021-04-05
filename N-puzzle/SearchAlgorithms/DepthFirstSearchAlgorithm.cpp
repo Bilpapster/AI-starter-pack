@@ -83,5 +83,9 @@ void DepthFirstSearchAlgorithm::performActionsOnUnvisited(State *&state) {
  * the closed set unordered map.
  */
 DepthFirstSearchAlgorithm::~DepthFirstSearchAlgorithm() {
+    while (!searchFrontierIsEmpty()) {
+        delete extractTopFromSearchFrontier();
+    }
+
     delete searchFrontier;
 }

@@ -98,5 +98,9 @@ unsigned short BestFirstSearchAlgorithm::defineHeuristicValueOf(State *&state) {
  * the closed set unordered map.
  */
 BestFirstSearchAlgorithm::~BestFirstSearchAlgorithm() {
+    while (!searchFrontierIsEmpty()) {
+        delete extractTopFromSearchFrontier();
+    }
+
     delete searchFrontier;
 }

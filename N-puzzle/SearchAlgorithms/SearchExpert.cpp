@@ -5,6 +5,7 @@
 #include <queue>
 #include <ctime>
 
+#include <N-puzzle/DefaultDefinitions/Macros.h>
 #include "DepthFirstSearchAlgorithm.h"
 #include "BreadthFirstSearchAlgorithm.h"
 #include "BestFirstSearchAlgorithm.h"
@@ -22,17 +23,23 @@ void SearchExpert::executeAvailableAlgorithms(State *initial, State *goal) {
         clock_t start = clock();
         solution = searchAlgorithm->search(initial, goal, numberOfExaminedStates, volumeOfAllocatedMemory);
         double millisElapsedOnSearch = (clock() - start);
-//        printResultsToConsole(searchAlgorithm, solution,
-//                              numberOfExaminedStates,
-//                              volumeOfAllocatedMemory,
-//                              millisElapsedOnSearch);
 
-        printResultsToFile(searchAlgorithm, solution,
-                              numberOfExaminedStates,
-                              volumeOfAllocatedMemory,
-                              millisElapsedOnSearch);
+        if (CONSOLE_PRINTING_ENABLED) {
+            printResultsToConsole(searchAlgorithm, solution,
+                                  numberOfExaminedStates,
+                                  volumeOfAllocatedMemory,
+                                  millisElapsedOnSearch);
+        }
+
+        if (FILE_PRINTING_ENABLED) {
+            printResultsToFile(searchAlgorithm, solution,
+                               numberOfExaminedStates,
+                               volumeOfAllocatedMemory,
+                               millisElapsedOnSearch);
+        }
     }
-    changeLineInFile();
+    if (solution && FILE_PRINTING_ENABLED) changeLineInFile();
+
     destructSearchAlgorithms(searchAlgorithms);
 
 }
@@ -68,15 +75,14 @@ void SearchExpert::printResultsToFile(const SearchAlgorithm *searchAlgorithm, co
                                       const long long int &numberOfExaminedStates,
                                       const long long int &volumeOfAllocatedMemory,
                                       const double &millisElapsedOnSearch) {
-    ofstream outputFile;
-    outputFile.open("Reports.txt", ios_base::app);
     if (solutionState) {
+        ofstream outputFile;
+        outputFile.open(DEFAULT_REPORT_FILE_NAME, ios_base::app);
         outputFile << numberOfExaminedStates << " "
                    << volumeOfAllocatedMemory << " "
                    << solutionState->getDepth() << " ";
-    } else
-        outputFile << "Unsolvable" << " ";
-    outputFile.close();
+        outputFile.close();
+    }
 }
 
 void SearchExpert::destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAlgorithms) {
@@ -89,7 +95,7 @@ void SearchExpert::destructSearchAlgorithms(vector<SearchAlgorithm *> *&searchAl
 
 void SearchExpert::changeLineInFile() {
     ofstream outputFile;
-    outputFile.open("Reports.txt", ios_base::app);
+    outputFile.open(DEFAULT_REPORT_FILE_NAME, ios_base::app);
     outputFile << endl;
     outputFile.close();
 

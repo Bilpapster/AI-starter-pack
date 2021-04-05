@@ -12,19 +12,18 @@
  */
 int main() {
 
+    bool solveRandomPuzzle = true;  // set to false for the default puzzle
+
+    State *initial = new State();
     State *goal = new State(true);
 
-    for (int i = 0; i < 2; i++) {
-        State *initial = new State();
-        StatisticsWizard::initializeRandomPuzzle(initial);
-        cout << "Random generated puzzle to solve:" << endl
-                << initial->toString() << endl;
+    if (solveRandomPuzzle) StatisticsWizard::initializeRandomPuzzle(initial);
 
-        SearchExpert::executeAvailableAlgorithms(initial, goal);
-        delete initial;
-        cout << "----------------------------------------------" << endl;
-    }
+    cout << "Randomly generated puzzle to solve:" << endl << initial->toString() << endl;
 
+    SearchExpert::executeAvailableAlgorithms(initial, goal);
+
+    delete initial;
     delete goal;
 
     return 0;
