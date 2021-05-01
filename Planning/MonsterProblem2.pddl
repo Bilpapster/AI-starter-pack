@@ -1,38 +1,38 @@
 (define (problem Monster2)
-    (:domain treasureHunt)
+    (:domain treasure-hunt)
     (:objects
         loc1 loc2 loc3 loc4 loc5 loc6 loc7 loc8 loc9 - cave
-        blackGoblin                                  - monster
-        goldenNecklace                               - treasure
-        movindSand                                   - pit
-        talariaSandals                               - boots
-        bowOfPeril                                   - weapon
+        black_goblin                                 - monster
+        golden_necklace                              - treasure
+        moving_sand                                  - pit
+        talaria_sandals                              - boots
+        bow_of_peril                                 - weapon
     )
     (:init
-        (hasSingleDoor loc1 loc5)
-        (hasSingleDoor loc5 loc2)
-        (hasSingleDoor loc5 loc7)
-        (hasSingleDoor loc5 loc9)
-        (hasSingleDoor loc7 loc4)
+        (has-single-door loc1 loc5)
+        (has-single-door loc5 loc2)
+        (has-single-door loc5 loc7)
+        (has-single-door loc5 loc9)
+        (has-single-door loc7 loc4)
 
-        (hasRoundDoor loc1 loc2)
-        (hasRoundDoor loc2 loc3)
-        (hasRoundDoor loc3 loc4)
-        (hasRoundDoor loc5 loc6)
-        (hasRoundDoor loc6 loc8)
+        (has-round-door loc1 loc2)
+        (has-round-door loc2 loc3)
+        (has-round-door loc3 loc4)
+        (has-round-door loc5 loc6)
+        (has-round-door loc6 loc8)
 
-        (playerAt loc1)
-        (monsterAt blackGoblin loc3)
-        (treasureAt goldenNecklace loc4)
-        (weaponAt bowOfPeril loc6)
-        (pitAt movindSand loc7)
-        (bootsAt talariaSandals loc8)
+        (player-at loc1)
+        (monster-at black_goblin loc3)
+        (treasure-at golden_necklace loc4)
+        (weapon-at bow_of_peril loc6)
+        (pit-at moving_sand loc7)
+        (boots-at talaria_sandals loc8)
     )
     (:goal
         (and
-            (playerAt loc1)
-            (forall (?treasureInRound - treasure)
-                (treasureCollected ?treasureInRound)
+            (player-at loc1)
+            (forall (?treasure_in_round - treasure)
+                (treasure-collected ?treasure_in_round)
             )
         )
     )

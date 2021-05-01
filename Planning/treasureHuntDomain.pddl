@@ -1,131 +1,110 @@
-(define (domain treasureHunt)
+(define (domain treasure-hunt)
     (:requirements :strips
                    :typing
                    :negative-preconditions
-                   :equality 
-                   :disjunctive-preconditions
-                   :universal-preconditions)
+                   :universal-preconditions
+                   :disjunctive-preconditions)
     
     (:types
-        cave - objects
-        monster - object 
-        weapon - object 
-        pit - object 
-        treasure - object
-        boots - object
-        
+        cave monster weapon pit treasure boots - object
     )
                    
     (:predicates
 
-        ; game entities
-        ; (cave ?aCave)
-        ; (monster ?aMonster)
-        ; (weapon ?aWeapon)
-        ; (pit ?aPit)
-        ; (treasure ?aTreasure)
-        ; (boots ?someBoots)
-
         ; connection between caves
-        (hasSingleDoor ?caveStart - cave ?caveDestination - cave)
-        (hasRoundDoor ?caveStart - cave ?caveDestination - cave)
+        (has-single-door ?cave_start - cave ?cave_destination - cave)
+        (has-round-door ?cave_start - cave ?cave_destination - cave)
 
         ; location of game objects
-        (treasureAt ?aTreasure - treasure ?aCave - cave)
-        (weaponAt ?aWeapon - weapon ?aCave - cave)
-        (bootsAt ?someBoots - boots ?aCave - cave)
-        (monsterAt ?aMonster - monster ?aCave - cave)
-        (pitAt ?aPit - pit ?aCave - cave)
-        (playerAt ?aCave - cave)
+        (treasure-at ?a_treasure - treasure ?a_cave - cave)
+        (weapon-at ?a_weapon - weapon ?a_cave - cave)
+        (boots-at ?some_boots - boots ?a_cave - cave)
+        (monster-at ?a_monster - monster ?a_cave - cave)
+        (pit-at ?a_pit - pit ?a_cave - cave)
+        (player-at ?a_cave - cave)
 
         ; collection of game objects
-        (treasureCollected ?aTreasure - treasure)
-        (weaponAvailable ?aWeapon - weapon)
-        (bootsAvailable ?someBoots - boots)
+        (treasure-collected ?a_treasure - treasure)
+        (weapon-available ?a_weapon - weapon)
+        (boots-available ?some_boots - boots)
     )
 
-    (:action Move
-        :parameters (?caveStart - cave ?caveDestination - cave)
+    (:action move
+        :parameters (?cave_start - cave ?cave_destination - cave)
         :precondition (and 
-                          ;(cave ?caveStart) (cave ?caveDestination) (pit ?aPit) (monster ?aMonster) 
-                          (playerAt ?caveStart)
+                          (player-at ?cave_start)
                           (or 
-                              (hasSingleDoor ?caveStart ?caveDestination) 
-                              (hasRoundDoor ?caveStart ?caveDestination) 
-                              (hasRoundDoor ?caveDestination ?caveStart)
+                              (has-single-door ?cave_start ?cave_destination) 
+                              (has-round-door ?cave_start ?cave_destination) 
+                              (has-round-door ?cave_destination ?cave_start)
                           )
                           (forall (?monsterInGame - monster)
-                                (not (monsterAt ?monsterInGame ?caveStart))
+                                (not (monster-at ?monsterInGame ?cave_start))
                           )
                           (forall (?pitInGame - pit)
-                                (not (pitAt ?pitInGame ?caveStart))
+                                (not (pit-at ?pitInGame ?cave_start))
                           )
                       )
         :effect (and 
-                    (playerAt ?caveDestination) 
-                    (not (playerAt ?caveStart))
+                    (player-at ?cave_destination) 
+                    (not (player-at ?cave_start))
                 )
     )
 
-    (:action KillMonster
-        :parameters (?aCave - cave ?aMonster - monster ?aWeapon - weapon)
+    (:action kill-monster
+        :parameters (?a_cave - cave ?a_monster - monster ?a_weapon - weapon)
         :precondition (and 
-                          ;(cave ?aCave) (monster ?aMonster) (weapon ?aWeapon)
-                          (playerAt ?aCave) (monsterAt ?aMonster ?aCave) 
-                          (weaponAvailable ?aWeapon)
+                          (player-at ?a_cave) (monster-at ?a_monster ?a_cave) 
+                          (weapon-available ?a_weapon)
                       )
         :effect (and 
-                    (not (monsterAt ?aMonster ?aCave)) 
-                    (not (weaponAvailable ?aWeapon))
+                    (not (monster-at ?a_monster ?a_cave)) 
+                    (not (weapon-available ?a_weapon))
                 )
     )
 
-    (:action JumpOverPit
-        :parameters (?aCave - cave ?aPit - pit ?someBoots - boots)
+    (:action jump-over-pit
+        :parameters (?a_cave - cave ?a_pit - pit ?some_boots - boots)
         :precondition (and 
-                          ;(cave ?aCave) (pit ?aPit) (boots ?someBoots)
-                          (playerAt ?aCave) (pitAt ?aPit ?aCave) 
-                          (bootsAvailable ?someBoots)
+                          (player-at ?a_cave) (pit-at ?a_pit ?a_cave) 
+                          (boots-available ?some_boots)
                       )
         :effect (and 
-                    (not (pitAt ?aPit ?aCave)) 
-                    (not (bootsAvailable ?someBoots))
+                    (not (pit-at ?a_pit ?a_cave)) 
+                    (not (boots-available ?some_boots))
                 )
     )
 
-    (:action CollectTreasure
-        :parameters (?aCave - cave ?aTreasure - treasure)
+    (:action collect-treasure
+        :parameters (?a_cave - cave ?a_treasure - treasure)
         :precondition (and 
-                          ;(cave ?aCave) (treasure ?aTreasure)
-                          (playerAt ?aCave) (treasureAt ?aTreasure ?aCave)
+                          (player-at ?a_cave) (treasure-at ?a_treasure ?a_cave)
                       )
         :effect (and 
-                    (treasureCollected ?aTreasure) 
-                    (not (treasureAt ?aTreasure ?aCave))
+                    (treasure-collected ?a_treasure) 
+                    (not (treasure-at ?a_treasure ?a_cave))
                 )
     )
 
-    (:action CollectWeapon
-        :parameters (?aCave - cave ?aWeapon - weapon)
+    (:action collect-weapon
+        :parameters (?a_cave - cave ?a_weapon - weapon)
         :precondition (and 
-                          ;(cave ?aCave) (weapon ?aWeapon)
-                          (playerAt ?aCave) (weaponAt ?aWeapon ?aCave)
+                          (player-at ?a_cave) (weapon-at ?a_weapon ?a_cave)
                       )
         :effect (and 
-                    (weaponAvailable ?aWeapon) 
-                    (not (weaponAt ?aWeapon ?aCave))
+                    (weapon-available ?a_weapon) 
+                    (not (weapon-at ?a_weapon ?a_cave))
                 )
     )
 
-    (:action CollectBoots
-        :parameters (?aCave - cave ?someBoots - boots)
+    (:action collect-boots
+        :parameters (?a_cave - cave ?some_boots - boots)
         :precondition (and 
-                          ;(cave ?aCave) (boots ?someBoots)
-                          (playerAt ?aCave) (bootsAt ?someBoots ?aCave)
+                          (player-at ?a_cave) (boots-at ?some_boots ?a_cave)
                       )
         :effect (and 
-                    (bootsAvailable ?someBoots) 
-                    (not (bootsAt ?someBoots ?aCave))
+                    (boots-available ?some_boots) 
+                    (not (boots-at ?some_boots ?a_cave))
                 )
     )
 )
