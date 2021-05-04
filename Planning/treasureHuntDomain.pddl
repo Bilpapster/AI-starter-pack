@@ -12,8 +12,8 @@
     (:predicates
 
         ; connection between caves
-        (has-single-door ?cave_start - cave ?cave_destination - cave)
-        (has-round-door ?cave_start - cave ?cave_destination - cave)
+        (has-single-passage ?cave_start - cave ?cave_destination - cave)
+        (has-round-passage ?cave_start - cave ?cave_destination - cave)
 
         ; location of game objects
         (treasure-at ?a_treasure - treasure ?a_cave - cave)
@@ -34,15 +34,15 @@
         :precondition (and 
                           (player-at ?cave_start)
                           (or 
-                              (has-single-door ?cave_start ?cave_destination) 
-                              (has-round-door ?cave_start ?cave_destination) 
-                              (has-round-door ?cave_destination ?cave_start)
+                              (has-single-passage ?cave_start ?cave_destination) 
+                              (has-round-passage ?cave_start ?cave_destination) 
+                              (has-round-passage ?cave_destination ?cave_start)
                           )
-                          (forall (?monsterInGame - monster)
-                                (not (monster-at ?monsterInGame ?cave_start))
+                          (forall (?monster_in_round - monster)
+                                (not (monster-at ?monster_in_round ?cave_start))
                           )
-                          (forall (?pitInGame - pit)
-                                (not (pit-at ?pitInGame ?cave_start))
+                          (forall (?pit_in_round - pit)
+                                (not (pit-at ?pit_in_round ?cave_start))
                           )
                       )
         :effect (and 

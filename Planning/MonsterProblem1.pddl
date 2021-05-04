@@ -5,20 +5,16 @@
         black_goblin                    - monster
         golden_necklace                 - treasure
         moving_sand                     - pit
-
-        ; placeholders 
-        no_weapon_in_round              - weapon
-        no_boots_in_round               - boots
     )
     (:init
-        (has-single-door loc1 loc5)
-        (has-single-door loc1 loc6)
-        (has-single-door loc5 loc4)
-        (has-single-door loc6 loc4)
+        (has-single-passage loc1 loc5)
+        (has-single-passage loc1 loc6)
+        (has-single-passage loc5 loc4)
+        (has-single-passage loc6 loc4)
 
-        (has-round-door loc1 loc2)
-        (has-round-door loc2 loc3)
-        (has-round-door loc3 loc4)
+        (has-round-passage loc1 loc2)
+        (has-round-passage loc2 loc3)
+        (has-round-passage loc3 loc4)
 
         (player-at loc1)
         (monster-at black_goblin loc6)
