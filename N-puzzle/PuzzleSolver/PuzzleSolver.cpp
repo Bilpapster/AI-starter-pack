@@ -1,19 +1,15 @@
 #include <iostream>
-#include <random>
-#include <N-puzzle/Statistics/StatisticsWizard.h>
+#include "PuzzleSolver.h"
+#include "N-puzzle/StateModel/State.h"
+#include "N-puzzle/Statistics/StatisticsWizard.h"
 #include "N-puzzle/SearchAlgorithms/SearchExpert.h"
 
 /**
  * The driving code for the N-puzzle solver. Just initializes the
  * initial snapshot of the puzzle and the goal one, invoking the
  * search functions to run on them and solve the puzzle.
- *
- * @return 0 as normal execution code
  */
-int main() {
-
-    bool solveRandomPuzzle = true;  // set to false for the default puzzle
-
+void PuzzleSolver::start() {
     State *initial = new State();
     State *goal = new State(true);
 
@@ -25,6 +21,4 @@ int main() {
 
     delete initial;
     delete goal;
-
-    return 0;
 }
